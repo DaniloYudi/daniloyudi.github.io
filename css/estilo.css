@@ -122,7 +122,7 @@ body { /*https://www.toptal.com/designers/subtlepatterns/  site para background*
 
 .conteudo-principal {
     font-size: 36px; /* tamanho da fonte do h1 */
-    float: left;  /* jogando o elemento #conteudo-principal para a esquerda */ 
+    float: none;  /* jogando o elemento #conteudo-principal para a esquerda */ 
     width: 620px; /* largura */ 
 
 }
