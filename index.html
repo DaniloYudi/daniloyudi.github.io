@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jogo de Plataforma</title>
+<title>Jogo de Tiro</title>
 <style>
     body {
         margin: 0;
         padding: 0;
         overflow: hidden;
+        background-color: #000;
     }
     
     #player {
@@ -17,7 +18,15 @@
         background-color: red;
         position: absolute;
         bottom: 0;
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .projectile {
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        position: absolute;
     }
 </style>
 </head>
@@ -25,91 +34,54 @@
 <div id="player"></div>
 <script>
     const player = document.getElementById('player');
-    let playerLeft = 0;
+    const projectiles = [];
+
+    let playerLeft = window.innerWidth / 2 - 25;
     let playerBottom = 0;
-    const gravity = 0.9;
-    let isJumping = false;
-    let isGoingLeft = false;
-    let isGoingRight = false;
-    let playerSpeed = 5;
+    const playerSpeed = 10;
 
-    function jump() {
-        if (!isJumping) {
-            isJumping = true;
-            let jumpCount = 0;
-            const jumpInterval = setInterval(() => {
-                const bottom = parseInt(window.getComputedStyle(player).getPropertyValue('bottom'));
-                if (bottom >= 250) {
-                    clearInterval(jumpInterval);
-                    const fallInterval = setInterval(() => {
-                        if (bottom <= 0) {
-                            clearInterval(fallInterval);
-                            isJumping = false;
-                        } else {
-                            player.style.bottom = `${bottom - 5}px`;
-                        }
-                    }, 20);
-                } else {
-                    player.style.bottom = `${bottom + 5}px`;
-                }
-                jumpCount++;
-                if (jumpCount >= 15) {
-                    clearInterval(jumpInterval);
-                    const fallInterval = setInterval(() => {
-                        if (bottom <= 0) {
-                            clearInterval(fallInterval);
-                            isJumping = false;
-                        } else {
-                            player.style.bottom = `${bottom - 5}px`;
-                        }
-                    }, 20);
-                }
-            }, 20);
+    function movePlayer(event) {
+        if (event.key === 'ArrowLeft' && playerLeft > 0) {
+            playerLeft -= playerSpeed;
+        } else if (event.key === 'ArrowRight' && playerLeft < window.innerWidth - 50) {
+            playerLeft += playerSpeed;
         }
+
+        player.style.left = playerLeft + 'px';
     }
 
-    function moveLeft() {
-        isGoingLeft = true;
-        player.style.left = `${playerLeft - playerSpeed}px`;
+    function shoot() {
+        const projectile = document.createElement('div');
+        projectile.classList.add('projectile');
+        projectile.style.left = playerLeft + 20 + 'px';
+        projectile.style.bottom = playerBottom + 50 + 'px';
+        document.body.appendChild(projectile);
+
+        projectiles.push(projectile);
     }
 
-    function moveRight() {
-        isGoingRight = true;
-        player.style.left = `${playerLeft + playerSpeed}px`;
+    function moveProjectiles() {
+        projectiles.forEach((projectile, index) => {
+            const bottom = parseInt(window.getComputedStyle(projectile).getPropertyValue('bottom'));
+            projectile.style.bottom = bottom + 10 + 'px';
+
+            if (bottom > window.innerHeight) {
+                projectiles.splice(index, 1);
+                projectile.remove();
+            }
+        });
     }
-
-    function stopMoving() {
-        isGoingLeft = false;
-        isGoingRight = false;
-    }
-
-    document.addEventListener('keydown', event => {
-        if (event.code === 'Space') {
-            jump();
-        }
-        if (event.code === 'ArrowLeft') {
-            moveLeft();
-        }
-        if (event.code === 'ArrowRight') {
-            moveRight();
-        }
-    });
-
-    document.addEventListener('keyup', event => {
-        if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') {
-            stopMoving();
-        }
-    });
 
     function gameLoop() {
-        if (isGoingLeft) {
-            playerLeft -= playerSpeed;
-            player.style.left = `${playerLeft}px`;
-        }
-        if (isGoingRight) {
-            playerLeft += playerSpeed;
-            player.style.left = `${playerLeft}px`;
-        }
+        document.addEventListener('keydown', movePlayer);
+        document.addEventListener('keydown', event => {
+            if (event.code === 'Space') {
+                shoot();
+            }
+        });
+
+        moveProjectiles();
+
         requestAnimationFrame(gameLoop);
     }
 
