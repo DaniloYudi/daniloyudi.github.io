@@ -1,91 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jogo de Tiro</title>
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #000;
-    }
-    
-    #player {
-        width: 50px;
-        height: 50px;
-        background-color: red;
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .projectile {
-        width: 10px;
-        height: 10px;
-        background-color: white;
-        position: absolute;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteio de Nomes</title>
 </head>
 <body>
-<div id="player"></div>
-<script>
-    const player = document.getElementById('player');
-    const projectiles = [];
+    <h1>Sorteio de Nomes</h1>
 
-    let playerLeft = window.innerWidth / 2 - 25;
-    let playerBottom = 0;
-    const playerSpeed = 10;
+    <label for="nomes">Insira os nomes (separados por vírgula):</label><br>
+    <textarea id="nomes" rows="4" cols="50"></textarea><br>
+    <button onclick="sortearNome()">Sortear</button><br><br>
 
-    function movePlayer(event) {
-        if (event.key === 'ArrowLeft' && playerLeft > 0) {
-            playerLeft -= playerSpeed;
-        } else if (event.key === 'ArrowRight' && playerLeft < window.innerWidth - 50) {
-            playerLeft += playerSpeed;
+    <h2>Nome Sorteado:</h2>
+    <p id="nomeSorteado"></p>
+
+    <script>
+        function sortearNome() {
+            const nomes = document.getElementById('nomes').value.split(',');
+            const indiceSorteado = Math.floor(Math.random() * nomes.length);
+            const nomeSorteado = nomes[indiceSorteado].trim();
+            document.getElementById('nomeSorteado').textContent = nomeSorteado;
         }
-
-        player.style.left = playerLeft + 'px';
-    }
-
-    function shoot() {
-        const projectile = document.createElement('div');
-        projectile.classList.add('projectile');
-        projectile.style.left = playerLeft + 20 + 'px';
-        projectile.style.bottom = playerBottom + 50 + 'px';
-        document.body.appendChild(projectile);
-
-        projectiles.push(projectile);
-    }
-
-    function moveProjectiles() {
-        projectiles.forEach((projectile, index) => {
-            const bottom = parseInt(window.getComputedStyle(projectile).getPropertyValue('bottom'));
-            projectile.style.bottom = bottom + 10 + 'px';
-
-            if (bottom > window.innerHeight) {
-                projectiles.splice(index, 1);
-                projectile.remove();
-            }
-        });
-    }
-
-    function gameLoop() {
-        document.addEventListener('keydown', movePlayer);
-        document.addEventListener('keydown', event => {
-            if (event.code === 'Space') {
-                shoot();
-            }
-        });
-
-        moveProjectiles();
-
-        requestAnimationFrame(gameLoop);
-    }
-
-    gameLoop();
-</script>
+    </script>
 </body>
 </html>
