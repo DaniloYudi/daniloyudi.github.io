@@ -3,24 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteio de Nomes</title>
+    <title>Gerador de Números para Bingo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        #numero {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Sorteio de Nomes</h1>
+    <h1>Gerador de Números para Bingo</h1>
 
-    <label for="nomes">Insira os nomes (separados por vírgula):</label><br>
-    <textarea id="nomes" rows="4" cols="50"></textarea><br>
-    <button onclick="sortearNome()">Sortear</button><br><br>
-
-    <h2>Nome Sorteado:</h2>
-    <p id="nomeSorteado"></p>
+    <div id="numero">Número</div>
+    <button onclick="gerarNumero()">Gerar Número</button>
 
     <script>
-        function sortearNome() {
-            const nomes = document.getElementById('nomes').value.split(',');
-            const indiceSorteado = Math.floor(Math.random() * nomes.length);
-            const nomeSorteado = nomes[indiceSorteado].trim();
-            document.getElementById('nomeSorteado').textContent = nomeSorteado;
+        const numerosSorteados = [];
+        const MAX_NUMERO = 75;
+
+        function gerarNumero() {
+            if (numerosSorteados.length === MAX_NUMERO) {
+                alert('Todos os números já foram sorteados!');
+                return;
+            }
+
+            let numeroSorteado;
+            do {
+                numeroSorteado = Math.floor(Math.random() * MAX_NUMERO) + 1;
+            } while (numerosSorteados.includes(numeroSorteado));
+
+            numerosSorteados.push(numeroSorteado);
+            document.getElementById('numero').textContent = numeroSorteado;
         }
     </script>
 </body>
