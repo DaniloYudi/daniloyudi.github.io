@@ -1,39 +1,119 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu E-Commerce</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogo de Plataforma</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    
+    #player {
+        width: 50px;
+        height: 50px;
+        background-color: red;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+</style>
 </head>
 <body>
-    <header>
-        <h1>Meu E-Commerce</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Início</a></li>
-                <li><a href="#">Produtos</a></li>
-                <li><a href="#">Sobre</a></li>
-                <li><a href="#">Contato</a></li>
-            </ul>
-        </nav>
-    </header>
+<div id="player"></div>
+<script>
+    const player = document.getElementById('player');
+    let playerLeft = 0;
+    let playerBottom = 0;
+    const gravity = 0.9;
+    let isJumping = false;
+    let isGoingLeft = false;
+    let isGoingRight = false;
+    let playerSpeed = 5;
 
-    <main>
-        <section class="produtos">
-            <article>
-                <img src="caminho_para_a_imagem" alt="Descrição do Produto">
-                <h2>Nome do Produto</h2>
-                <p>Descrição do Produto</p>
-                <p>Preço: R$XX,XX</p>
-                <button>Adicionar ao Carrinho</button>
-            </article>
-            <!-- Adicione mais artigos para mais produtos -->
-        </section>
-    </main>
+    function jump() {
+        if (!isJumping) {
+            isJumping = true;
+            let jumpCount = 0;
+            const jumpInterval = setInterval(() => {
+                const bottom = parseInt(window.getComputedStyle(player).getPropertyValue('bottom'));
+                if (bottom >= 250) {
+                    clearInterval(jumpInterval);
+                    const fallInterval = setInterval(() => {
+                        if (bottom <= 0) {
+                            clearInterval(fallInterval);
+                            isJumping = false;
+                        } else {
+                            player.style.bottom = `${bottom - 5}px`;
+                        }
+                    }, 20);
+                } else {
+                    player.style.bottom = `${bottom + 5}px`;
+                }
+                jumpCount++;
+                if (jumpCount >= 15) {
+                    clearInterval(jumpInterval);
+                    const fallInterval = setInterval(() => {
+                        if (bottom <= 0) {
+                            clearInterval(fallInterval);
+                            isJumping = false;
+                        } else {
+                            player.style.bottom = `${bottom - 5}px`;
+                        }
+                    }, 20);
+                }
+            }, 20);
+        }
+    }
 
-    <footer>
-        <p>&copy; 2024 Meu E-Commerce. Todos os direitos reservados.</p>
-    </footer>
+    function moveLeft() {
+        isGoingLeft = true;
+        player.style.left = `${playerLeft - playerSpeed}px`;
+    }
+
+    function moveRight() {
+        isGoingRight = true;
+        player.style.left = `${playerLeft + playerSpeed}px`;
+    }
+
+    function stopMoving() {
+        isGoingLeft = false;
+        isGoingRight = false;
+    }
+
+    document.addEventListener('keydown', event => {
+        if (event.code === 'Space') {
+            jump();
+        }
+        if (event.code === 'ArrowLeft') {
+            moveLeft();
+        }
+        if (event.code === 'ArrowRight') {
+            moveRight();
+        }
+    });
+
+    document.addEventListener('keyup', event => {
+        if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') {
+            stopMoving();
+        }
+    });
+
+    function gameLoop() {
+        if (isGoingLeft) {
+            playerLeft -= playerSpeed;
+            player.style.left = `${playerLeft}px`;
+        }
+        if (isGoingRight) {
+            playerLeft += playerSpeed;
+            player.style.left = `${playerLeft}px`;
+        }
+        requestAnimationFrame(gameLoop);
+    }
+
+    gameLoop();
+</script>
 </body>
 </html>
