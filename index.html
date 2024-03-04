@@ -1,76 +1,58 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roleta</title>
+    <title>Social Network</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
         }
-        h1 {
-            color: #333;
-        }
-        #roleta {
+        .container {
             width: 300px;
             margin: 0 auto;
-            border: 2px solid #333;
-            border-radius: 50%;
-            padding: 10px;
-            position: relative;
-        }
-        .opcao {
-            width: 100px;
-            height: 100px;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotateZ(0deg);
-            transition: transform 3s ease;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            font-size: 16px;
-            cursor: pointer;
+            margin-top: 100px;
         }
-        #resultado {
-            margin-top: 20px;
-            font-size: 24px;
+        input[type="text"],
+        input[type="password"] {
+            width: 80%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 80%;
+        }
+        button:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <h1>Roleta</h1>
-    <div id="roleta">
-        <div class="opcao" onclick="rodar()">Tereco</div>
-        <div class="opcao" onclick="rodar()">Vitao</div>
-        <div class="opcao" onclick="rodar()">Joao</div>
-        <div class="opcao" onclick="rodar()">Broxa</div>
-        <div class="opcao" onclick="rodar()">Sem intervalo</div>
-        <div class="opcao" onclick="rodar()">Caiu aqui é gay</div>
+    <div class="container">
+        <h2>Login</h2>
+        <form action="/login" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <a href="/register">Don't have an account? Register here</a>
     </div>
-    <div id="resultado"></div>
-
-    <script>
-        function rodar() {
-            const roleta = document.getElementById('roleta');
-            const opcoes = roleta.getElementsByClassName('opcao');
-            const grausPorOpcao = 360 / opcoes.length;
-            const resultado = document.getElementById('resultado');
-
-            const graus = Math.floor(Math.random() * 3600) + 360;
-            roleta.style.transform = `rotateZ(${graus}deg)`;
-
-            setTimeout(() => {
-                const indice = Math.floor((360 - (graus % 360)) / grausPorOpcao);
-                resultado.textContent = opcoes[indice].textContent;
-            }, 3000);
-        }
-    </script>
 </body>
 </html>
