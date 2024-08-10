@@ -78,7 +78,7 @@ a:hover {
 
 body { /*https://www.toptal.com/designers/subtlepatterns/  site para background*/ 
 
-    background:url('../imagens/fundo_do_site.png');
+    background:url('../imagens/fundo_do_site.jpg');
 
 }
 
@@ -143,7 +143,7 @@ body { /*https://www.toptal.com/designers/subtlepatterns/  site para background*
     float: right; /* jogando o elemento #conteudo-principal para a direita */ 
     background: #0f599f; /* cor de fundo */ 
     color: #FFF; /* cor da fonte */ 
-    background: url('../imagens/background-azul.gif');
+    background: url('../imagens/background_green.jpg');
     background-attachment: fixed;
     background-size: 50%; /* o background vai ocupar 50% da tela do site */ 
 
@@ -181,7 +181,7 @@ body { /*https://www.toptal.com/designers/subtlepatterns/  site para background*
 
 #rodape{
     color: white;
-    background: url('../imagens/background-azul.gif') no-repeat center;
+    background: url('../imagens/background_green.jpg') no-repeat center;
     background-size: 100%;
 
 }
