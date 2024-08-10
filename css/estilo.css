@@ -142,7 +142,7 @@ body { /*https://www.toptal.com/designers/subtlepatterns/  site para background*
     width: 280px; /* largura */ 
     float: right; /* jogando o elemento #conteudo-principal para a direita */ 
     background: #0f599f; /* cor de fundo */ 
-    color: #FFF; /* cor da fonte */ 
+    color: #000; /* cor da fonte */ 
     background: url('../imagens/background_green.jpg');
     background-attachment: fixed;
     background-size: 50%; /* o background vai ocupar 50% da tela do site */ 
